@@ -1,5 +1,7 @@
 /* see LICENSE for copyright and license */
 
+#include <X11/XF86keysym.h>
+
 #ifndef CONFIG_H
 #define CONFIG_H
 
@@ -26,7 +28,7 @@
 #define MINWSZ          50        /* minimum window size in pixels  */
 #define DEFAULT_DESKTOP 0         /* the desktop to focus initially */
 #define DESKTOPS        4         /* number of desktops - edit DESKTOPCHANGE keys to suit */
-#define USELESSGAP      22        /* the size of the useless gap in pixels */
+#define USELESSGAP      20        /* the size of the useless gap in pixels */
 
 /**
  * open applications to specified desktop with specified mode.
@@ -35,7 +37,7 @@
 static const AppRule rules[] = { \
     /*  class     desktop  follow  float */
     { "MPlayer",     3,    True,   False },
-    { "Gimp",        0,    False,  True  },
+    { "Gimp",        3,    False,  False },
 };
 
 /* helper for spawning shell commands */
@@ -57,7 +59,7 @@ static const char *menucmd[] = { "dmenu_run", NULL };
  */
 static Key keys[] = {
     /* modifier          key            function           argument */
-    {  MOD1,             XK_b,          togglepanel,       {NULL}},
+    {  MOD1|SHIFT,       XK_b,          togglepanel,       {NULL}},
     {  MOD1,             XK_BackSpace,  focusurgent,       {NULL}},
     {  MOD1|SHIFT,       XK_q,          killclient,        {NULL}},
     {  MOD1,             XK_j,          next_win,          {NULL}},
@@ -74,11 +76,11 @@ static Key keys[] = {
     {  MOD1|SHIFT,       XK_Return,     swap_master,       {NULL}},
     {  MOD1|SHIFT,       XK_j,          move_down,         {NULL}},
     {  MOD1|SHIFT,       XK_k,          move_up,           {NULL}},
-    {  MOD1|SHIFT,       XK_t,          switch_mode,       {.i = TILE}},
-    {  MOD1|SHIFT,       XK_m,          switch_mode,       {.i = MONOCLE}},
-    {  MOD1|SHIFT,       XK_b,          switch_mode,       {.i = BSTACK}},
-    {  MOD1|SHIFT,       XK_g,          switch_mode,       {.i = GRID}},
-    {  MOD1|SHIFT,       XK_f,          switch_mode,       {.i = FLOAT}},
+    {  MOD1,             XK_t,          switch_mode,       {.i = TILE}},
+    {  MOD1,             XK_m,          switch_mode,       {.i = MONOCLE}},
+    {  MOD1,             XK_b,          switch_mode,       {.i = BSTACK}},
+    {  MOD1,             XK_g,          switch_mode,       {.i = GRID}},
+    {  MOD1,             XK_f,          switch_mode,       {.i = FLOAT}},
     {  MOD1|SHIFT,       XK_z,          quit,              {.i = 0}}, /* quit with exit value 0 */
     {  MOD1|CONTROL,     XK_z,          quit,              {.i = 1}}, /* quit with exit value 1 */
     {  MOD1,             XK_Return,     spawn,             {.com = termcmd}},
@@ -91,6 +93,24 @@ static Key keys[] = {
     {  MOD4|SHIFT,       XK_k,          moveresize,        {.v = (int []){   0,   0,   0, -25 }}}, /* height shrink */
     {  MOD4|SHIFT,       XK_l,          moveresize,        {.v = (int []){   0,   0,  25,   0 }}}, /* width grow    */
     {  MOD4|SHIFT,       XK_h,          moveresize,        {.v = (int []){   0,   0, -25,   0 }}}, /* width shrink  */
+	{ 0,                 XF86XK_AudioRaiseVolume, spawn,   SHCMD("pactl set-sink-volume 0 +5% && killall sleep") },
+	{ 0,                 XF86XK_AudioLowerVolume, spawn,   SHCMD("pactl set-sink-volume 0 -5% && killall sleep") },
+	{ 0,                 XF86XK_AudioMute,        spawn,   SHCMD("pactl set-sink-mute 0 toggle") },
+	{ 0,                 XF86XK_AudioMicMute,     spawn,   SHCMD("amixer set Capture toggle") },
+	{ 0,                 XF86XK_AudioPlay,        spawn,   SHCMD("cmus-remote -u") },
+	{ 0,                 XF86XK_AudioPrev,        spawn,   SHCMD("cmus-remote -r") },
+	{ 0,                 XF86XK_AudioStop,        spawn,   SHCMD("cmus-remote -s") },
+	{ 0,                 XF86XK_AudioNext,        spawn,   SHCMD("cmus-remote -n") },
+	{ 0,                 XF86XK_MonBrightnessUp,  spawn,   SHCMD("xbacklight -inc 10") },
+	{ 0,                 XF86XK_MonBrightnessDown,spawn,   SHCMD("xbacklight -dec 10") },
+	{ MOD1|SHIFT,        XK_w,          spawn,             SHCMD("$BROWSER")},
+	{ MOD1|SHIFT,        XK_f,          spawn,             SHCMD("$TERMINAL lf")},
+	{ MOD1|SHIFT,        XK_m,          spawn,             SHCMD("$TERMINAL cmus")},
+	{ MOD1|SHIFT,        XK_c,          spawn,             SHCMD("$TERMINAL calcurse")},
+	{ MOD1|SHIFT,        XK_p,          spawn,             SHCMD("$TERMINAL ncpamixer")},
+	{ MOD1|SHIFT,        XK_t,          spawn,             SHCMD("$TERMINAL transmission-remote-cli")},
+	{ MOD1|SHIFT,        XK_n,          spawn,             SHCMD("$HOME/.scripts/connman_dmenu")},
+	{ MOD1,              XK_F7,         spawn,             SHCMD("scrot $HOME/screenshot-%Y-%m-%d-%H_%M.jpg -q 90 && notify-send 'Screenshot saved to:' '~/'")},
        DESKTOPCHANGE(    XK_1,                             0)
        DESKTOPCHANGE(    XK_2,                             1)
        DESKTOPCHANGE(    XK_3,                             2)
