@@ -27,7 +27,7 @@
 #define UNFOCUS         "#262626" /* unfocused window border color  */
 #define MINWSZ          50        /* minimum window size in pixels  */
 #define DEFAULT_DESKTOP 0         /* the desktop to focus initially */
-#define DESKTOPS        4         /* number of desktops - edit DESKTOPCHANGE keys to suit */
+#define DESKTOPS        9         /* number of desktops - edit DESKTOPCHANGE keys to suit */
 #define USELESSGAP      20        /* the size of the useless gap in pixels */
 
 /**
@@ -115,6 +115,11 @@ static Key keys[] = {
        DESKTOPCHANGE(    XK_2,                             1)
        DESKTOPCHANGE(    XK_3,                             2)
        DESKTOPCHANGE(    XK_4,                             3)
+       DESKTOPCHANGE(    XK_5,                             4)
+       DESKTOPCHANGE(    XK_6,                             5)
+       DESKTOPCHANGE(    XK_7,                             6)
+       DESKTOPCHANGE(    XK_8,                             7)
+       DESKTOPCHANGE(    XK_9,                             8)
 };
 
 /**
